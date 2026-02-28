@@ -33,6 +33,9 @@ function PLUGIN:MiseEnv(ctx)
         return {env = {}}
     end
 
+    if not secrets then
+        return
+    end
 
     local env_vars = {}
     for _, item in ipairs(secrets) do
