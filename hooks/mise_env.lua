@@ -32,8 +32,8 @@ function PLUGIN:MiseEnv(ctx)
         print("[mise-infisical] warning: failed to parse JSON from `" .. command .. "`: " .. tostring(data))
         return {env = {}}
     end
-
-    if not secrets then
+    
+    if not secrets or type(secrets) ~= "table" then
         return
     end
 
