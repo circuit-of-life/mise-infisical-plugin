@@ -54,6 +54,11 @@ function PLUGIN:MiseEnv(ctx)
     local project_id = ctx.options.project_id
     local env_file = ctx.options.env_file or ".env.local"
 
+    if os.getenv("CI") then
+        log.info("CI detected, skipping plugin")
+        return
+    end
+
     local ttl = tonumber(ctx.options.cache_ttl) or 3600 -- (1h) seconds
 
     -- cache dir
