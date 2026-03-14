@@ -54,6 +54,20 @@ function PLUGIN:MiseEnv(ctx)
     local project_id = ctx.options.project_id
     local env_file = ctx.options.env_file or ".env.local"
 
+    local token = ""
+
+    if os.getenv("CI") then
+        log.info("CI detected, using token")
+        
+        local token = os.getenv("INFISICAL_TOKEN")
+
+        if not token then
+            log.error("missing INFISICAL_TOKEN")
+        end
+
+        token = "INFISICAL_TOKEN=" .. token
+    end
+
     local ttl = tonumber(ctx.options.cache_ttl) or 3600 -- (1h) seconds
 
     -- cache dir
@@ -74,7 +88,7 @@ function PLUGIN:MiseEnv(ctx)
 
     log.info("fetching secrets")
 
-    local command = infisical .. " export --output-file " .. env_file
+    local command = token .. " " .. infisical .. " export --output-file " .. env_file
 
     if environment then
         command = command .. " --env " .. environment
