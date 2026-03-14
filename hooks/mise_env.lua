@@ -59,7 +59,7 @@ function PLUGIN:MiseEnv(ctx)
     if os.getenv("CI") then
         log.info("CI detected, using token")
         
-        local token = os.getenv("INFISICAL_TOKEN")
+        token = os.getenv("INFISICAL_TOKEN")
 
         if not token then
             log.error("missing INFISICAL_TOKEN")
