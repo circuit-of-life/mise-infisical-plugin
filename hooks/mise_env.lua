@@ -62,7 +62,11 @@ function PLUGIN:MiseEnv(ctx)
         token = os.getenv("INFISICAL_TOKEN")
 
         if not token then
-            log.error("missing INFISICAL_TOKEN")
+            log.warn("missing INFISICAL_TOKEN")
+            return {
+                env = {},
+                redact = true,
+            }
         end
 
         token = "INFISICAL_TOKEN=" .. token
@@ -114,7 +118,7 @@ function PLUGIN:MiseEnv(ctx)
 
     if not ok then
         log.error("infisical failed:", output)
-        return { env = {} }
+        return { env = {}, redact = true }
     end
 
     local new_expire = now() + ttl
