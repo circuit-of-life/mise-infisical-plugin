@@ -1,6 +1,7 @@
 local cmd = require("cmd")
 local file = require("file")
 local log = require("log")
+local env = require("env")
 
 local function now()
     return os.time()
@@ -69,7 +70,7 @@ function PLUGIN:MiseEnv(ctx)
             }
         end
 
-        token = "INFISICAL_TOKEN=" .. token
+        env.setenv("INFISICAL_TOKEN", token)
     end
 
     local ttl = tonumber(ctx.options.cache_ttl) or 3600 -- (1h) seconds
