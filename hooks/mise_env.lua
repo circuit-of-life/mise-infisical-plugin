@@ -93,7 +93,7 @@ function PLUGIN:MiseEnv(ctx)
 
     log.info("fetching secrets")
 
-    local command = token .. " " .. infisical .. " export --output-file " .. env_file
+    local command = infisical .. " export --output-file " .. env_file
 
     if environment then
         command = command .. " --env " .. environment
