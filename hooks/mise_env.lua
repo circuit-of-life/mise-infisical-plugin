@@ -26,6 +26,12 @@ function PLUGIN:MiseEnv(ctx)
 
     local exec_env = {}
     local token = os.getenv("INFISICAL_TOKEN")
+
+    if not token or token == "" then
+        log.warn("INFISICAL_TOKEN not set, skipping secret fetch")
+        return {cacheable = false, watch_files = {}, env = {}, redact = true}
+    end
+
     if token and token ~= "" then
         exec_env["INFISICAL_TOKEN"] = token
     end
@@ -36,13 +42,13 @@ function PLUGIN:MiseEnv(ctx)
 
     if not ok then
         log.error("infisical failed:", output)
-        return {cacheable = true, watch_files = {}, env = {}, redact = true}
+        return {cacheable = false, watch_files = {}, env = {}, redact = true}
     end
 
     local decode_ok, data = pcall(json.decode, output)
     if not decode_ok then
         log.error("failed to parse JSON from infisical:", data)
-        return {cacheable = true, watch_files = {}, env = {}, redact = true}
+        return {cacheable = false, watch_files = {}, env = {}, redact = true}
     end
 
     local env_vars = {}
