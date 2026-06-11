@@ -31,10 +31,13 @@ function PLUGIN:MiseEnv(ctx)
 
     local exec_env = {}
     local token = os.getenv("INFISICAL_TOKEN")
+    local is_ci = os.getenv("CI") == "true"
 
     if not token or token == "" then
-        log.warn("INFISICAL_TOKEN not set, skipping secret fetch")
-        return {cacheable = false, watch_files = {}, env = {}, redact = true}
+        if is_ci then
+            log.warn("INFISICAL_TOKEN not set, skipping secret fetch")
+            return {cacheable = false, watch_files = {}, env = {}, redact = true}
+        end
     end
 
     if token and token ~= "" then
