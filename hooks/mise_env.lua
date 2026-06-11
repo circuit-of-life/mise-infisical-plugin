@@ -28,6 +28,8 @@ function PLUGIN:MiseEnv(ctx)
     end
 
     log.info("fetching secrets")
+    local diag_ok, diag_url = pcall(function() return cmd.exec("printenv INFISICAL_API_URL") end)
+    log.info("subprocess INFISICAL_API_URL:", diag_ok and diag_url:gsub("%s+$", "") or "(not set)")
 
     local ok, output = pcall(function()
         return cmd.exec(command)
