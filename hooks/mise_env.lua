@@ -23,12 +23,11 @@ function PLUGIN:MiseEnv(ctx)
         command = command .. " --projectId " .. project_id
     end
 
-    -- if domain then
-    --     command = command .. " --domain " .. domain
-    -- end
+    if domain then
+        command = command .. " --domain " .. domain
+    end
 
     log.info("fetching secrets")
-
 
     local exec_env = {}
     local token = os.getenv("INFISICAL_TOKEN")
@@ -42,10 +41,8 @@ function PLUGIN:MiseEnv(ctx)
         exec_env["INFISICAL_TOKEN"] = token
     end
 
-    local env_domain = os.getenv("INFISICAL_DOMAIN")
-
-    if env_domain and env_domain ~= "" then
-        exec_env["INFISICAL_DOMAIN"] = env_domain
+    if domain and domain ~= "" then
+        exec_env["INFISICAL_DOMAIN"] = domain
     end
 
     local ok, output = pcall(function()
