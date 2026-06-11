@@ -29,27 +29,8 @@ function PLUGIN:MiseEnv(ctx)
 
     log.info("fetching secrets")
 
-    local exec_env = {}
-    local token = os.getenv("INFISICAL_TOKEN")
-    local is_ci = os.getenv("CI") == "true"
-
-    if not token or token == "" then
-        if is_ci then
-            log.warn("INFISICAL_TOKEN not set, skipping secret fetch")
-            return {cacheable = false, watch_files = {}, env = {}, redact = true}
-        end
-    end
-
-    if token and token ~= "" then
-        exec_env["INFISICAL_TOKEN"] = token
-    end
-
-    if domain and domain ~= "" then
-        exec_env["INFISICAL_DOMAIN"] = domain
-    end
-
     local ok, output = pcall(function()
-        return cmd.exec(command, {env = exec_env})
+        return cmd.exec(command)
     end)
 
     if not ok then
